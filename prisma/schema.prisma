@@ -1,0 +1,122 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String       @id
+  name         String
+  email        String       @unique
+  passwordHash String       @map("password_hash")
+  passwordSalt String       @map("password_salt")
+  role         String
+  createdAt    DateTime     @default(now()) @map("created_at")
+  rooms        Room[]
+  evaluations  Evaluation[]
+  responses    Response[]
+  history      History[]
+
+  @@map("users")
+}
+
+model Room {
+  id          String       @id @default(cuid())
+  title       String
+  level       String       @default("6e primaire")
+  description String       @default("")
+  teacherId   String       @map("teacher_id")
+  isActive    Boolean      @default(true) @map("is_active")
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
+  teacher     User         @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  modules     Module[]
+  evaluations Evaluation[]
+
+  @@map("rooms")
+}
+
+model Module {
+  id          String       @id @default(cuid())
+  roomId      String       @map("room_id")
+  title       String
+  description String       @default("")
+  position    Int          @default(0)
+  isActive    Boolean      @default(true) @map("is_active")
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
+  room        Room         @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  questions   Question[]
+  evaluations Evaluation[]
+
+  @@map("modules")
+}
+
+model Question {
+  id            String       @id
+  moduleId      String       @map("module_id")
+  text          String
+  responseType  String       @map("response_type")
+  correctAnswer String       @map("correct_answer")
+  skillCode     String       @default("") @map("skill_code")
+  hint          String       @default("")
+  explanation   String       @default("")
+  position      Int          @default(0)
+  isActive      Boolean      @default(true) @map("is_active")
+  createdAt     DateTime     @default(now()) @map("created_at")
+  updatedAt     DateTime     @updatedAt @map("updated_at")
+  module        Module       @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  responses     Response[]
+
+  @@map("questions")
+}
+
+model Evaluation {
+  id             String     @id
+  studentId      String     @map("student_id")
+  roomId         String     @map("room_id")
+  moduleId       String     @map("module_id")
+  score          Int        @default(0)
+  totalQuestions Int        @default(0) @map("total_questions")
+  correctAnswers Int        @default(0) @map("correct_answers")
+  successRate    Decimal    @default(0) @db.Decimal(5, 2) @map("success_rate")
+  createdAt      DateTime   @default(now()) @map("created_at")
+  student        User       @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  room           Room       @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  module         Module     @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  responses      Response[]
+
+  @@map("evaluations")
+}
+
+model Response {
+  id             String     @id
+  evaluationId   String     @map("evaluation_id")
+  studentId      String     @map("student_id")
+  questionId     String     @map("question_id")
+  selectedAnswer String     @map("selected_answer")
+  isCorrect      Boolean    @default(false) @map("is_correct")
+  earnedPoints   Int        @default(0) @map("earned_points")
+  createdAt      DateTime   @default(now()) @map("created_at")
+  evaluation     Evaluation @relation(fields: [evaluationId], references: [id], onDelete: Cascade)
+  student        User       @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  question       Question   @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@map("responses")
+}
+
+model History {
+  id         String   @id
+  actorId    String   @map("actor_id")
+  entityType String   @map("entity_type")
+  entityId   String   @map("entity_id")
+  action     String
+  snapshot   Json
+  createdAt  DateTime @default(now()) @map("created_at")
+  actor      User     @relation(fields: [actorId], references: [id], onDelete: Cascade)
+
+  @@map("history")
+}
