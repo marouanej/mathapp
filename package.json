@@ -10,9 +10,9 @@
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push"
   },
- "engines": {
-  "node": "24.x"
-},
+  "engines": {
+    "node": "24.x"
+  },
   "dependencies": {
     "@auth0/nextjs-auth0": "^4.0.2",
     "@headlessui/react": "^1.6.6",
@@ -23,12 +23,12 @@
     "i18next-http-backend": "^3.0.2",
     "lucide-react": "^1.16.0",
     "nanoid": "^5.1.2",
-    "next": "^15.1.7",
+    "next": "^16.2.6",
     "next-auth": "^4.24.11",
-    "next-i18next": "^15.4.3",
+    "next-i18next": "^16.0.6",
     "peerjs": "^1.4.4",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
     "react-i18next": "^16.6.1",
     "react-toastify": "^9.0.6",
     "react-tooltip": "^4.2.21",
@@ -45,7 +45,7 @@
     "autoprefixer": "^10.4.5",
     "debug": "^4.3.4",
     "eslint": "8.13.0",
-    "eslint-config-next": "12.1.5",
+    "eslint-config-next": "^12.3.7",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
     "postcss": "^8.4.12",
