@@ -11,7 +11,7 @@
     "prisma:push": "prisma db push"
   },
  "engines": {
-  "node": "18.x"
+  "node": "24.x"
 },
   "dependencies": {
     "@auth0/nextjs-auth0": "^4.0.2",
