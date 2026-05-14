@@ -10,9 +10,9 @@
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push"
   },
- "engines": {
-  "node": "24.x"
-},
+  "engines": {
+    "node": "24.x"
+  },
   "dependencies": {
     "@auth0/nextjs-auth0": "^4.0.2",
     "@headlessui/react": "^1.6.6",
@@ -23,7 +23,7 @@
     "i18next-http-backend": "^3.0.2",
     "lucide-react": "^1.16.0",
     "nanoid": "^5.1.2",
-    "next": "^15.1.7",
+    "next": "15.1.11",
     "next-auth": "^4.24.11",
     "next-i18next": "^15.4.3",
     "peerjs": "^1.4.4",
