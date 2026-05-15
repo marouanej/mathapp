@@ -9,7 +9,7 @@ export default async function handler(req, res) {
   }
 
   if (req.method === 'POST') {
-    const { roomId, title,  isActive } = req.body || {};
+    const { roomId, title, moduleType, description, isActive } = req.body || {};
 
     if (!roomId ) {
       return res.status(400).json({ error: 'roomId est obligatoire.' });
@@ -19,7 +19,7 @@ export default async function handler(req, res) {
       await createModuleInRoom({
         teacherId: session.user.id,
         roomId,
-        payload: { title, isActive },
+        payload: { title, moduleType, description, isActive },
       });
 
       const rooms = await getRoomsForUser(session.user);

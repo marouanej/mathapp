@@ -44,6 +44,7 @@ model Module {
   roomId      String       @map("room_id")
   title       String
   description String       @default("")
+  moduleType  String       @map("module_type")
   position    Int          @default(0)
   isActive    Boolean      @default(true) @map("is_active")
   createdAt   DateTime     @default(now()) @map("created_at")

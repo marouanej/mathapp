@@ -154,11 +154,10 @@ export const useRoomsStore = () => {
 
 //MODULES**************************************************//
 
-  const createModule = useCallback(async ({roomId,  title, isActive}) => {
-    console.log('Creating module with data:', {roomId, title, isActive});
+  const createModule = useCallback(async ({roomId, title, moduleType, description, isActive}) => {
     const payload = await sendJson('/api/modules', {
       method: 'POST',
-      body: JSON.stringify({ roomId, title, isActive }),
+      body: JSON.stringify({ roomId, title, moduleType, description, isActive }),
     });
 
     setRooms(payload.rooms || []);

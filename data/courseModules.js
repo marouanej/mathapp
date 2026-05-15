@@ -43,6 +43,7 @@ export const COURSE_MODULES = [
 export const createEmptyModules = () =>
   COURSE_MODULES.map((module) => ({
     id: module.id,
+    moduleType: module.id,
     title: module.label,
     description: module.description,
     questions: [],
