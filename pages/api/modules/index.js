@@ -1,4 +1,3 @@
-import { convertToObject } from 'typescript';
 import { createModuleInRoom, deleteModuleById, getRoomsForUser, updateModuleById } from '../../../lib/rooms';
 import { requireRole } from '../../../lib/session';
 
@@ -13,7 +12,7 @@ export default async function handler(req, res) {
     const { roomId, title,  isActive } = req.body || {};
 
     if (!roomId ) {
-      return res.status(400).json({ error: 'roomId et moduleType sont obligatoires.' });
+      return res.status(400).json({ error: 'roomId est obligatoire.' });
     }
 
     try {

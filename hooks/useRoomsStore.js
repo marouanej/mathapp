@@ -107,6 +107,8 @@ export const useRoomsStore = () => {
   useEffect(() => {
     refreshEvaluations();
   }, [refreshEvaluations]);
+  
+//ROOMS**************************************************//
 
   const createRoom = useCallback(async (title, description = '') => {
     const payload = await sendJson('/api/rooms', {
@@ -150,6 +152,8 @@ export const useRoomsStore = () => {
     await refreshEvaluations();
   }, [refreshEvaluations]);
 
+//MODULES**************************************************//
+
   const createModule = useCallback(async ({roomId,  title, isActive}) => {
     console.log('Creating module with data:', {roomId, title, isActive});
     const payload = await sendJson('/api/modules', {
@@ -181,6 +185,11 @@ export const useRoomsStore = () => {
     setRooms(payload.rooms || []);
     await refreshEvaluations();
   }, [refreshEvaluations]);
+
+
+//QUESTIONNN****************************************//
+
+
 
 const saveQuestion = useCallback(async (roomId, question) => {
   const responseType = resolveQuestionType(question.responseType ?? question.type, {
