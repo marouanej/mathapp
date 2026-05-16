@@ -176,14 +176,14 @@ export const TeacherPanel = ({
 
   return (
     <>
-      <div className="space-y-4">
-        <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4 shadow-sm">
+      <div className="space-y-3">
+        <div className="rounded-[28px] border border-slate-200 bg-slate-50 p-3 shadow-sm sm:p-4">
           <div className="flex flex-col gap-2">
             <div>
               <p className="text-[11px] uppercase tracking-[0.3em] text-slate-500 font-semibold">
                 Créer une salle
               </p>
-              <h2 className="mt-1 text-xl font-black text-slate-900">
+              <h2 className="mt-1 text-lg font-black text-slate-900 sm:text-xl">
                 Nouveau room
               </h2>
             </div>
@@ -192,28 +192,28 @@ export const TeacherPanel = ({
             </p>
           </div>
 
-          <div className="mt-4 flex flex-col gap-3">
+          <div className="mt-3 flex flex-col gap-2.5">
             <div className="flex gap-2">
               <input
                 value={roomTitle}
                 onChange={(e) => setRoomTitle(e.target.value)}
                 placeholder="Nom de la salle"
-                className="flex-1 rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm outline-none transition focus:border-sky-400 focus:ring-1 focus:ring-sky-200"
+                className="min-w-0 flex-1 rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 shadow-sm outline-none transition focus:border-sky-400 focus:ring-1 focus:ring-sky-200"
               />
               <button
                 onClick={handleCreateRoom}
-                className="inline-flex h-10 items-center justify-center rounded-2xl bg-slate-900 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800"
+                className="inline-flex h-11 min-w-[44px] items-center justify-center rounded-2xl bg-slate-900 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800"
               >
                 +
               </button>
             </div>
 
-            <div className="flex flex-wrap gap-2">
+            <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
               {rooms.map((room) => (
-                <div key={room.id} className="relative">
+                <div key={room.id} className="relative min-w-0">
                   <button
                     onClick={() => setSelectedRoomId(room.id)}
-                    className={`rounded-full px-3 py-2 text-xs font-semibold transition ${
+                    className={`w-full truncate rounded-2xl px-3 py-2.5 text-xs font-semibold transition ${
                       room.id === selectedRoomId
                         ? 'bg-slate-900 text-white shadow-sm'
                         : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-100'
@@ -238,14 +238,14 @@ export const TeacherPanel = ({
         </div>
 
         {selectedRoom && (
-          <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="rounded-[28px] border border-slate-200 bg-white p-3 shadow-sm sm:p-4">
             <div className="flex flex-col gap-2">
               <div className="flex flex-wrap items-center justify-between gap-2">
-                <div>
+                <div className="min-w-0">
                   <p className="text-[11px] uppercase tracking-[0.3em] text-slate-500 font-semibold">
                     Ajouter un module
                   </p>
-                  <h2 className="mt-1 text-xl font-black text-slate-900">
+                  <h2 className="mt-1 truncate text-lg font-black text-slate-900 sm:text-xl">
                     Module pour « {selectedRoom.title} »
                   </h2>
                 </div>
@@ -259,11 +259,11 @@ export const TeacherPanel = ({
                   value={moduleTitle}
                   onChange={(e) => setModuleTitle(e.target.value)}
                   placeholder="Nom du module"
-                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-900 shadow-sm outline-none transition focus:border-sky-400 focus:ring-1 focus:ring-sky-200"
+                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-900 shadow-sm outline-none transition focus:border-sky-400 focus:ring-1 focus:ring-sky-200"
                 />
                 <button
                   onClick={handleCreateModule}
-                  className="inline-flex h-10 items-center justify-center rounded-2xl bg-sky-600 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-500"
+                  className="inline-flex h-11 items-center justify-center rounded-2xl bg-sky-600 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-500"
                 >
                   Ajouter module
                 </button>
@@ -274,13 +274,13 @@ export const TeacherPanel = ({
                   <div key={m.id} className="relative">
                     <button
                       onClick={() => setSelectedModuleId(m.id)}
-                      className={`w-full rounded-2xl border px-3 py-2 text-left text-sm font-semibold transition ${
+                      className={`w-full rounded-2xl border px-3 py-3 pr-11 text-left text-sm font-semibold transition ${
                         m.id === selectedModuleId
                           ? 'border-sky-500 bg-sky-50 text-slate-900 shadow-sm'
                           : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50'
                       }`}
                     >
-                      {m.title}
+                      <span className="block truncate">{m.title}</span>
                     </button>
                     <button
                       onClick={() => {
@@ -300,13 +300,13 @@ export const TeacherPanel = ({
         )}
 
         {selectedModule && (
-          <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4 shadow-sm">
+          <div className="rounded-[28px] border border-slate-200 bg-slate-50 p-3 shadow-sm sm:p-4">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <div>
+              <div className="min-w-0">
                 <p className="text-[11px] uppercase tracking-[0.3em] text-slate-500 font-semibold">
                   Ajouter une question
                 </p>
-                <h2 className="mt-1 text-xl font-black text-slate-900">
+                <h2 className="mt-1 truncate text-lg font-black text-slate-900 sm:text-xl">
                   Module « {selectedModule.title} »
                 </h2>
               </div>
@@ -315,17 +315,17 @@ export const TeacherPanel = ({
               </span>
             </div>
 
-            <div className="mt-3 grid gap-3">
+            <div className="mt-3 grid gap-2.5">
               <textarea
                 value={questionForm.question}
                 onChange={(e) =>
                   setQuestionForm({ ...questionForm, question: e.target.value })
                 }
                 placeholder="Question"
-                className="min-h-[96px] w-full rounded-3xl border border-slate-200 bg-white px-3 py-3 text-sm text-slate-900 shadow-sm outline-none transition focus:border-sky-400 focus:ring-1 focus:ring-sky-200"
+                className="min-h-[88px] w-full rounded-3xl border border-slate-200 bg-white px-3 py-3 text-sm text-slate-900 shadow-sm outline-none transition focus:border-sky-400 focus:ring-1 focus:ring-sky-200"
               />
 
-              <div className="grid gap-3 md:grid-cols-[minmax(0,220px)_1fr]">
+              <div className="grid gap-2 md:grid-cols-[minmax(0,220px)_1fr]">
                 <select
                   value={questionForm.responseType}
                   onChange={(e) =>
@@ -334,7 +334,7 @@ export const TeacherPanel = ({
                       responseType: e.target.value,
                     })
                   }
-                  className="w-full rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm outline-none transition focus:border-sky-400 focus:ring-1 focus:ring-sky-200"
+                  className="w-full rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 shadow-sm outline-none transition focus:border-sky-400 focus:ring-1 focus:ring-sky-200"
                 >
                   {QUESTION_TYPE_OPTIONS.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -342,7 +342,7 @@ export const TeacherPanel = ({
                     </option>
                   ))}
                 </select>
-                <div className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-600 shadow-sm">
+                <div className="rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-600 shadow-sm">
                   <p className="text-[11px] uppercase tracking-[0.25em] text-slate-400 font-semibold">
                     Format attendu
                   </p>
@@ -360,7 +360,7 @@ export const TeacherPanel = ({
                   })
                 }
                 placeholder={selectedQuestionTypeMeta.answerPlaceholder}
-                className="w-full rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm outline-none transition focus:border-sky-400 focus:ring-1 focus:ring-sky-200"
+                className="w-full rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 shadow-sm outline-none transition focus:border-sky-400 focus:ring-1 focus:ring-sky-200"
               />
               {questionForm.correctAnswer.trim() ? (
                 <p className="text-xs text-slate-500">
@@ -380,7 +380,7 @@ export const TeacherPanel = ({
                   setQuestionForm({ ...questionForm, hint: e.target.value })
                 }
                 placeholder="Indice"
-                className="w-full rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm outline-none transition focus:border-sky-400 focus:ring-1 focus:ring-sky-200"
+                className="w-full rounded-2xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 shadow-sm outline-none transition focus:border-sky-400 focus:ring-1 focus:ring-sky-200"
               />
 
               <textarea
@@ -392,12 +392,12 @@ export const TeacherPanel = ({
                   })
                 }
                 placeholder="Explication"
-                className="min-h-[96px] w-full rounded-3xl border border-slate-200 bg-white px-3 py-3 text-sm text-slate-900 shadow-sm outline-none transition focus:border-sky-400 focus:ring-1 focus:ring-sky-200"
+                className="min-h-[88px] w-full rounded-3xl border border-slate-200 bg-white px-3 py-3 text-sm text-slate-900 shadow-sm outline-none transition focus:border-sky-400 focus:ring-1 focus:ring-sky-200"
               />
 
               <button
                 onClick={handleCreateQuestion}
-                className="inline-flex h-10 items-center justify-center rounded-2xl bg-emerald-600 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-500"
+                className="inline-flex h-11 items-center justify-center rounded-2xl bg-emerald-600 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-500"
               >
                 Ajouter la question
               </button>
@@ -407,8 +407,8 @@ export const TeacherPanel = ({
       </div>
 
       {showDeleteRoomModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
-          <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-lg">
+        <div className="safe-x safe-y fixed inset-0 z-50 flex items-end justify-center bg-slate-950/45 sm:items-center">
+          <div className="w-full max-w-sm rounded-[28px] bg-white p-4 shadow-lg sm:p-6">
             <h3 className="text-lg font-semibold text-slate-900">
               Supprimer cette salle ?
             </h3>
@@ -436,8 +436,8 @@ export const TeacherPanel = ({
       )}
 
       {showDeleteModuleModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
-          <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-lg">
+        <div className="safe-x safe-y fixed inset-0 z-50 flex items-end justify-center bg-slate-950/45 sm:items-center">
+          <div className="w-full max-w-sm rounded-[28px] bg-white p-4 shadow-lg sm:p-6">
             <h3 className="text-lg font-semibold text-slate-900">
               Supprimer ce module ?
             </h3>

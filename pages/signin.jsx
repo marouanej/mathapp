@@ -91,25 +91,35 @@ export default function SignInPage() {
         <title>Connexion - Plateforme educative</title>
       </Head>
 
-      <main className="min-h-screen bg-slate-100 px-4 py-4 flex items-center justify-center">
-        <div className="w-full max-w-[380px] space-y-4">
-          <section className="rounded-[28px] border border-slate-200 bg-white/90 p-4 shadow-sm">
+      <main className="safe-x safe-y flex min-h-screen items-center justify-center bg-transparent">
+        <div className="w-full max-w-md space-y-3">
+          <section className="rounded-[28px] border border-slate-200 bg-white/95 p-3 shadow-sm sm:p-4">
             <div className="flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-500 to-violet-500 text-white shadow-sm">
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-500 to-teal-500 text-white shadow-sm">
                 <span className="text-xl font-black">M</span>
               </div>
               <div>
-                <p className="text-[11px] uppercase tracking-[0.32em] text-slate-500 font-semibold">Math app</p>
-                <h1 className="mt-1 text-xl font-black text-slate-900">Connexion</h1>
+                <p className="text-[11px] uppercase tracking-[0.32em] text-slate-500 font-semibold">
+                  Math app
+                </p>
+                <h1 className="mt-1 text-lg font-black text-slate-900 sm:text-xl">
+                  Connexion
+                </h1>
               </div>
             </div>
-            <p className="mt-3 text-sm leading-5 text-slate-500">Connectez-vous pour accéder à vos salles et modules de mathématiques.</p>
+            <p className="mt-2.5 text-sm leading-5 text-slate-500">
+              Connectez-vous pour accéder à vos salles et modules de
+              mathématiques.
+            </p>
           </section>
 
-          <section className="rounded-[28px] bg-white p-4 shadow-sm border border-slate-200">
+          <section className="rounded-[28px] border border-slate-200 bg-white p-3 shadow-sm sm:p-4">
             <form className="space-y-3" onSubmit={handleLogin}>
               <div>
-                <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.3em] text-slate-500" htmlFor="login-email">
+                <label
+                  className="mb-1 block text-xs font-semibold uppercase tracking-[0.3em] text-slate-500"
+                  htmlFor="login-email"
+                >
                   Email
                 </label>
                 <input
@@ -126,7 +136,10 @@ export default function SignInPage() {
               </div>
 
               <div className="relative">
-                <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.3em] text-slate-500" htmlFor="login-password">
+                <label
+                  className="mb-1 block text-xs font-semibold uppercase tracking-[0.3em] text-slate-500"
+                  htmlFor="login-password"
+                >
                   Mot de passe
                 </label>
                 <input
@@ -148,7 +161,9 @@ export default function SignInPage() {
                 </button>
               </div>
 
-              {loginError && <p className="text-sm text-red-500">{loginError}</p>}
+              {loginError && (
+                <p className="text-sm text-red-500">{loginError}</p>
+              )}
 
               <button
                 type="submit"
@@ -174,12 +189,16 @@ export default function SignInPage() {
         </div>
 
         {showRegister && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 px-4 py-6">
-            <div className="w-full max-w-[380px] rounded-[28px] bg-white p-4 shadow-sm border border-slate-200">
+          <div className="safe-x safe-y fixed inset-0 z-50 flex items-end justify-center bg-slate-950/35 sm:items-center">
+            <div className="max-h-[92vh] w-full max-w-md overflow-y-auto rounded-[28px] border border-slate-200 bg-white p-3 shadow-xl sm:p-4">
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <p className="text-[11px] uppercase tracking-[0.32em] text-slate-500 font-semibold">Inscription</p>
-                  <h2 className="mt-1 text-xl font-black text-slate-900">Créer un compte</h2>
+                  <p className="text-[11px] uppercase tracking-[0.32em] text-slate-500 font-semibold">
+                    Inscription
+                  </p>
+                  <h2 className="mt-1 text-lg font-black text-slate-900 sm:text-xl">
+                    Créer un compte
+                  </h2>
                 </div>
                 <button
                   type="button"
@@ -193,7 +212,10 @@ export default function SignInPage() {
 
               <form className="mt-3 space-y-3" onSubmit={handleRegister}>
                 <div>
-                  <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.3em] text-slate-500" htmlFor="register-name">
+                  <label
+                    className="mb-1 block text-xs font-semibold uppercase tracking-[0.3em] text-slate-500"
+                    htmlFor="register-name"
+                  >
                     Nom complet
                   </label>
                   <input
@@ -209,7 +231,10 @@ export default function SignInPage() {
                 </div>
 
                 <div>
-                  <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.3em] text-slate-500" htmlFor="register-email">
+                  <label
+                    className="mb-1 block text-xs font-semibold uppercase tracking-[0.3em] text-slate-500"
+                    htmlFor="register-email"
+                  >
                     Email
                   </label>
                   <input
@@ -225,7 +250,10 @@ export default function SignInPage() {
                 </div>
 
                 <div className="relative">
-                  <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.3em] text-slate-500" htmlFor="register-password">
+                  <label
+                    className="mb-1 block text-xs font-semibold uppercase tracking-[0.3em] text-slate-500"
+                    htmlFor="register-password"
+                  >
                     Mot de passe
                   </label>
                   <input
@@ -233,7 +261,10 @@ export default function SignInPage() {
                     type={showRegisterPassword ? 'text' : 'password'}
                     value={registerForm.password}
                     onChange={(e) =>
-                      setRegisterForm((c) => ({ ...c, password: e.target.value }))
+                      setRegisterForm((c) => ({
+                        ...c,
+                        password: e.target.value,
+                      }))
                     }
                     className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-3 py-3 pr-12 text-sm text-slate-900 outline-none transition focus:border-sky-400 focus:ring-1 focus:ring-sky-200"
                     placeholder="••••••••"
@@ -248,7 +279,10 @@ export default function SignInPage() {
                 </div>
 
                 <div>
-                  <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.3em] text-slate-500" htmlFor="register-role">
+                  <label
+                    className="mb-1 block text-xs font-semibold uppercase tracking-[0.3em] text-slate-500"
+                    htmlFor="register-role"
+                  >
                     Rôle
                   </label>
                   <select
@@ -264,8 +298,12 @@ export default function SignInPage() {
                   </select>
                 </div>
 
-                {registerError && <p className="text-sm text-red-500">{registerError}</p>}
-                {registerSuccess && <p className="text-sm text-emerald-600">{registerSuccess}</p>}
+                {registerError && (
+                  <p className="text-sm text-red-500">{registerError}</p>
+                )}
+                {registerSuccess && (
+                  <p className="text-sm text-emerald-600">{registerSuccess}</p>
+                )}
 
                 <button
                   type="submit"

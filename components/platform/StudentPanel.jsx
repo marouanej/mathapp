@@ -272,14 +272,16 @@ const GameHeader = ({
     : 0;
   const urgent = timeLeft <= 5;
   return (
-    <div className="rounded-3xl bg-slate-900 p-4 text-white shadow-sm">
+    <div className="sticky top-2 z-10 rounded-[28px] bg-slate-900 p-3 text-white shadow-sm sm:p-4">
       <div className="flex flex-col gap-3">
         <div className="flex items-start justify-between gap-3">
-          <div>
+          <div className="min-w-0">
             <p className="text-[10px] uppercase tracking-[0.3em] text-slate-300 font-semibold">
               {roomTitle}
             </p>
-            <h2 className="mt-1 text-lg font-black">{moduleTitle}</h2>
+            <h2 className="mt-1 truncate text-base font-black sm:text-lg">
+              {moduleTitle}
+            </h2>
             <p className="mt-1 text-xs text-slate-300">
               Question {questionNumber} / {totalQuestions}
             </p>
@@ -334,7 +336,7 @@ const GameHeader = ({
 };
 
 const QuestionCard = ({ question }) => (
-  <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
+  <div className="rounded-[28px] border border-slate-200 bg-white p-3 shadow-sm sm:p-4">
     <div
       className={cx(
         'inline-flex rounded-full border px-2 py-1 text-[10px] font-black uppercase tracking-[0.2em]',
@@ -347,7 +349,7 @@ const QuestionCard = ({ question }) => (
     >
       {question.difficulty} · {question.timeLimit}s
     </div>
-    <p className="mt-4 text-center text-lg font-black leading-snug text-slate-900">
+    <p className="mt-3 text-center text-base font-black leading-snug text-slate-900 sm:text-lg">
       {question.prompt}
     </p>
   </div>
@@ -360,7 +362,7 @@ const ChoiceGrid = ({
   disabled,
   onAnswer,
 }) => (
-  <div className="grid gap-3">
+  <div className="grid gap-2.5">
     {question.choices.map((choice, index) => {
       const selected = selectedChoice === choice;
       const correct = choice === question.correctAnswer;
@@ -373,7 +375,7 @@ const ChoiceGrid = ({
           disabled={disabled}
           onClick={() => onAnswer(choice)}
           className={cx(
-            'w-full rounded-3xl border-2 px-4 py-3 text-left text-sm font-black transition duration-200 active:scale-[0.98]',
+            'w-full rounded-[26px] border-2 px-3.5 py-3 text-left text-sm font-black transition duration-200 active:scale-[0.98]',
             success
               ? 'border-emerald-300 bg-[linear-gradient(180deg,#34d399,#10b981)] text-white shadow-sm'
               : error
@@ -384,7 +386,7 @@ const ChoiceGrid = ({
           )}
         >
           <div className="flex items-center justify-between gap-3 text-sm">
-            <span>
+            <span className="min-w-0 break-words">
               {String.fromCharCode(65 + index)}.{' '}
               {formatChoice(choice, question.type)}
             </span>
@@ -404,7 +406,7 @@ const FeedbackCard = ({ feedback, onContinue }) =>
   !feedback ? null : (
     <div
       className={cx(
-        'rounded-3xl border p-4 shadow-sm',
+        'rounded-[28px] border p-3 shadow-sm sm:p-4',
         feedback.tone === 'success'
           ? 'border-emerald-200 bg-emerald-50'
           : 'border-rose-200 bg-rose-50'
@@ -431,17 +433,17 @@ const FeedbackCard = ({ feedback, onContinue }) =>
 
 const SummaryScreen = ({ summary, onReplay, onModules, onRooms }) =>
   !summary ? null : (
-    <div className="space-y-3">
+    <div className="space-y-2.5">
       <div
         className={cx(
-          'rounded-3xl p-4 text-white shadow-sm',
+          'rounded-[28px] p-3 text-white shadow-sm sm:p-4',
           summary.kind === 'success' ? 'bg-sky-700' : 'bg-orange-600'
         )}
       >
         <p className="text-[10px] uppercase tracking-[0.3em] text-white/80">
           {summary.roomTitle}
         </p>
-        <h2 className="mt-2 text-2xl font-black">
+        <h2 className="mt-2 text-xl font-black sm:text-2xl">
           {summary.kind === 'success' ? 'Mission complete' : 'Try again'}
         </h2>
         <p className="mt-2 text-sm leading-5 text-white/90">
@@ -509,6 +511,7 @@ export const StudentPanel = ({ rooms = [] }) => {
   const [score, setScore] = useState(0);
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [timeLeft, setTimeLeft] = useState(0);
+  const [isTimerPrimed, setIsTimerPrimed] = useState(false);
   const [timerSeed, setTimerSeed] = useState(0);
   const [selectedChoice, setSelectedChoice] = useState(null);
   const [feedback, setFeedback] = useState(null);
@@ -560,22 +563,34 @@ export const StudentPanel = ({ rooms = [] }) => {
   useEffect(() => {
     if (screen !== SCREENS.play || !currentQuestion || feedback || saving)
       return undefined;
+
     timeoutHandledRef.current = false;
+    setIsTimerPrimed(false);
     setTimeLeft(currentQuestion.timeLimit);
+    const primeId = window.requestAnimationFrame(() => {
+      setIsTimerPrimed(true);
+    });
     const timerId = window.setInterval(
       () => setTimeLeft((value) => (value <= 1 ? 0 : value - 1)),
       1000
     );
-    return () => window.clearInterval(timerId);
+    return () => {
+      window.cancelAnimationFrame(primeId);
+      window.clearInterval(timerId);
+      setIsTimerPrimed(false);
+    };
   }, [currentQuestion, feedback, saving, screen, timerSeed]);
 
   const startRun = useCallback(() => {
     if (!questions.length) return;
+
     setQuestionIndex(0);
     setLives(INITIAL_LIVES);
     setStreak(0);
     setScore(0);
     setCorrectAnswers(0);
+    setTimeLeft(questions[0].timeLimit);
+    setIsTimerPrimed(false);
     setSelectedChoice(null);
     setFeedback(null);
     setSummary(null);
@@ -691,13 +706,22 @@ export const StudentPanel = ({ rooms = [] }) => {
       !currentQuestion ||
       feedback ||
       saving ||
+      !isTimerPrimed ||
       timeLeft > 0 ||
       timeoutHandledRef.current
     )
       return;
     timeoutHandledRef.current = true;
     failAttempt({ timeout: true });
-  }, [currentQuestion, failAttempt, feedback, saving, screen, timeLeft]);
+  }, [
+    currentQuestion,
+    failAttempt,
+    feedback,
+    isTimerPrimed,
+    saving,
+    screen,
+    timeLeft,
+  ]);
 
   const handleAnswer = useCallback(
     (choice) => {
@@ -768,17 +792,28 @@ export const StudentPanel = ({ rooms = [] }) => {
 
   const continueGame = useCallback(() => {
     if (!feedback) return;
+
+    const nextQuestion =
+      feedback.tone === 'success'
+        ? questions[questionIndex + 1] || null
+        : currentQuestion;
+
+    if (nextQuestion) {
+      setTimeLeft(nextQuestion.timeLimit);
+    }
+
     setSelectedChoice(null);
     setFeedback(null);
     if (feedback.tone === 'success') setQuestionIndex((value) => value + 1);
     timeoutHandledRef.current = false;
+    setIsTimerPrimed(false);
     setTimerSeed((value) => value + 1);
-  }, [feedback]);
+  }, [currentQuestion, feedback, questionIndex, questions]);
 
   if (!availableRooms.length) {
     return (
-      <section className="rounded-3xl border border-dashed border-slate-300 bg-white/80 p-5 text-center shadow-sm">
-        <h2 className="text-xl font-black text-slate-900">
+      <section className="rounded-[28px] border border-dashed border-slate-300 bg-white/90 p-4 text-center shadow-sm">
+        <h2 className="text-lg font-black text-slate-900">
           No rooms available yet
         </h2>
         <p className="mt-2 text-sm leading-5 text-slate-500">
@@ -790,14 +825,16 @@ export const StudentPanel = ({ rooms = [] }) => {
   }
 
   return (
-    <section className="space-y-4 pb-6">
+    <section className="safe-bottom space-y-3 pb-4">
       {screen === SCREENS.rooms ? (
         <>
-          <div className="rounded-3xl bg-gradient-to-r from-orange-500 to-pink-500 p-4 text-white shadow-sm">
+          <div className="rounded-[28px] bg-gradient-to-r from-orange-500 to-pink-500 p-3 text-white shadow-sm sm:p-4">
             <p className="text-[10px] uppercase tracking-[0.3em] text-white/80">
               Select Room
             </p>
-            <h1 className="mt-2 text-2xl font-black">Choose your adventure</h1>
+            <h1 className="mt-2 text-xl font-black sm:text-2xl">
+              Choose your adventure
+            </h1>
             <p className="mt-2 text-xs leading-5 text-white/90">
               Pick a room, then choose a module and jump into the challenge.
             </p>
@@ -813,14 +850,14 @@ export const StudentPanel = ({ rooms = [] }) => {
                   setScreen(SCREENS.modules);
                 }}
                 className={cx(
-                  'w-full rounded-3xl border px-4 py-3 text-left transition active:scale-[0.98]',
+                  'w-full rounded-[28px] border px-3.5 py-3 text-left transition active:scale-[0.98]',
                   room.id === selectedRoomId
                     ? 'border-sky-500 bg-sky-500 text-white shadow-sm'
                     : 'border-slate-200 bg-white text-slate-900 shadow-sm'
                 )}
               >
                 <div className="flex items-start justify-between gap-3">
-                  <div>
+                  <div className="min-w-0">
                     <p
                       className={cx(
                         'text-[10px] font-black uppercase tracking-[0.3em]',
@@ -831,7 +868,9 @@ export const StudentPanel = ({ rooms = [] }) => {
                     >
                       Room
                     </p>
-                    <h3 className="mt-2 text-base font-black">{room.title}</h3>
+                    <h3 className="mt-2 truncate text-base font-black">
+                      {room.title}
+                    </h3>
                     <p
                       className={cx(
                         'mt-1 text-xs leading-5',
@@ -863,7 +902,7 @@ export const StudentPanel = ({ rooms = [] }) => {
 
       {screen === SCREENS.modules ? (
         <>
-          <div className="rounded-3xl bg-gradient-to-r from-violet-600 to-sky-600 p-4 text-white shadow-sm">
+          <div className="rounded-[28px] bg-gradient-to-r from-violet-600 to-sky-600 p-3 text-white shadow-sm sm:p-4">
             <button
               type="button"
               onClick={() => setScreen(SCREENS.rooms)}
@@ -874,7 +913,9 @@ export const StudentPanel = ({ rooms = [] }) => {
             <p className="mt-3 text-[10px] uppercase tracking-[0.3em] text-violet-100">
               Select Module
             </p>
-            <h1 className="mt-2 text-2xl font-black">{selectedRoom?.title}</h1>
+            <h1 className="mt-2 truncate text-xl font-black sm:text-2xl">
+              {selectedRoom?.title}
+            </h1>
             <p className="mt-2 text-xs leading-5 text-violet-100">
               Choose a module with questions, then start the game loop.
             </p>
@@ -886,14 +927,14 @@ export const StudentPanel = ({ rooms = [] }) => {
                 type="button"
                 onClick={() => setSelectedModuleId(module.id)}
                 className={cx(
-                  'w-full rounded-3xl border px-4 py-3 text-left transition active:scale-[0.98]',
+                  'w-full rounded-[28px] border px-3.5 py-3 text-left transition active:scale-[0.98]',
                   module.id === selectedModuleId
                     ? 'border-violet-500 bg-violet-500 text-white shadow-sm'
                     : 'border-slate-200 bg-white text-slate-900 shadow-sm'
                 )}
               >
                 <div className="flex items-start justify-between gap-3">
-                  <div>
+                  <div className="min-w-0">
                     <p
                       className={cx(
                         'text-[10px] font-black uppercase tracking-[0.3em]',
@@ -904,7 +945,7 @@ export const StudentPanel = ({ rooms = [] }) => {
                     >
                       Module
                     </p>
-                    <h3 className="mt-2 text-base font-black">
+                    <h3 className="mt-2 truncate text-base font-black">
                       {module.title}
                     </h3>
                     <p
@@ -939,7 +980,7 @@ export const StudentPanel = ({ rooms = [] }) => {
               </button>
             ))}
           </div>
-          <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="rounded-[28px] border border-slate-200 bg-white p-3 shadow-sm sm:p-4">
             <h2 className="text-base font-black text-slate-900">
               {selectedModule?.title || 'Choose a module'}
             </h2>
